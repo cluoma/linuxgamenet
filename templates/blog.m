@@ -45,7 +45,7 @@
         {{^rewrite}}
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="{{script_name}}?tag={{.}}">{{.}}</a> {{/tags}}</p>
         {{/rewrite}}
-        <hr>
+        
         </div>
         {{/posts}}
         {{^posts}}

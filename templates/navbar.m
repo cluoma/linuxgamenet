@@ -16,6 +16,7 @@
             {{^rewrite}}
             <a class="navbar-brand" href="{{script_name}}">
             {{/rewrite}}
+            <span><img src="/images/logo2.svg" width="40" height="40" style="vertical-align: top; margin-top: -10px;" alt="LinuxGameNetwork Logo"></span>
                 {{navbar_title}}
             </a>
         </div>

@@ -11,14 +11,14 @@
 #define config_h
 
 // Basic stuff
-#define COPYRIGHT_OWNER "bittyblog"
-#define NAVBAR_TITLE "bittyblog"
-#define HTML_TITLE "bittyblog - a sample bittyblog"
-#define DB_PATH "/home/colin/Documents/bittyblog/bittyblog.db"
-#define IMAGE_PATH "/home/colin/Documents/bittyblog/images"
-#define TEMPLATE_PATH "/home/colin/Documents/bittyblog/templates"
+#define COPYRIGHT_OWNER "LinuxGameNetwork"
+#define NAVBAR_TITLE "LinuxGameNetwork"
+#define HTML_TITLE "Linux gaming news and reviews - LinuxGameNetwork"
+#define DB_PATH "/home/colin/Documents/linuxgamenet/bittyblog.db"
+#define IMAGE_PATH "/home/colin/Documents/linuxgamenet/www/images"
+#define TEMPLATE_PATH "/home/colin/Documents/linuxgamenet/templates"
 
 // Site Behaviour
-#define POSTS_PER_PAGE 5     // How many blog posts should be shown per pagination
+#define POSTS_PER_PAGE 10     // How many blog posts should be shown per pagination
 
 #endif
