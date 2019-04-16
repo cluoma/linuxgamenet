@@ -38,14 +38,19 @@
         {{/rewrite}}
         <p class="blog-post-meta">{{time}}</p>
         <p>{{&text}}</p>
-        <hr>
+        <hr style="border-color: #aaaaaa">
         {{#rewrite}}
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>
         {{/rewrite}}
         {{^rewrite}}
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="{{script_name}}?tag={{.}}">{{.}}</a> {{/tags}}</p>
         {{/rewrite}}
-        
+	
+	<br>
+	<br>
+	<div id="commento"></div>
+	<script defer src="https://commento.linuxgame.net/js/commento.js"></script>
+
         </div>
         {{/posts}}
         {{^posts}}
