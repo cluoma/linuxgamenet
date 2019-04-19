@@ -5,11 +5,14 @@
 
 {{> navbar.m}}
 
-<div class="container" width="80%%">
+<div class="container">
+<div class="row">
+    <div class="col-sm-8 blog-main">
+    
     {{#posts}}
     <div class="panel panel-default" style="border-color: #428bca">
     <div class="panel-heading" style="background-color: #428bca; color: #fff">{{title}}</div>
-    <div class="panel-body">
+    <div class="panel-body" style="font-size: 15px;">
     <p>{{&text}}</p>
     </div>
     </div>
@@ -45,8 +48,29 @@
     </ul></nav>
     {{/nav_buttons}}
 
-</div>
+    </div>
 
+    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+        <!-- About box sidebar module-->
+        <div class="sidebar-module sidebar-module-inset"><h4>About</h4>
+            <p>At Linux Game Network we try to provide the most recent news in the world of Linux gaming.</p>
+                <p>We'll cover new game releases, hardware, and have more in-depth reviews of big titles.</p>
+                <p>The options for Linux gamers are always getting better and we hope to show that.</p>
+        </div>
+        <!-- Archives sidebar module-->
+        <div class="sidebar-module"><h4>Archives</h4><ol class="list-unstyled">
+            {{#archives}}
+            {{#rewrite}}
+            <li><a href="/archive/{{year}}/{{month}}">{{month_s}} {{year}} ({{post_count}})</a></li>
+            {{/rewrite}}
+            {{^rewrite}}
+            <li><a href="{{script_name}}?month={{month}}&year={{year}}">{{month_s}} {{year}} ({{post_count}})</a></li>
+            {{/rewrite}}
+            {{/archives}}
+        </ol></div>
+    </div>
+
+</div>
 </div>
 
 {{> footer.m}}
