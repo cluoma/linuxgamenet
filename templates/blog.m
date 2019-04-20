@@ -37,7 +37,7 @@
         <a href="{{script_name}}?page={{page_name}}&id={{p_id}}"><h2 class="blog-post-title">{{title}}</h2></a>
         {{/rewrite}}
         <p class="blog-post-meta">{{time}}</p>
-        <p>{{&text}}</p>
+            {{&text}}
         <hr style="border-color: #aaaaaa">
         {{#rewrite}}
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>

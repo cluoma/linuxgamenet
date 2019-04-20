@@ -50,7 +50,6 @@
                     Go
                 </button>
                 </span>
-                </input>
             </div>
             </form>
         </div>
