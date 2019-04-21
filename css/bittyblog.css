@@ -970,6 +970,12 @@ h6, .h6 {
     font-size: 28px;
     font-weight: bold;
 }
+.blog-post-img {
+    display: block;
+    margin: auto;
+    max-width: 80%;
+    width: 80%;
+}
 
 @media screen and (max-width: 450px) {
     .blog-post-preview-img {
