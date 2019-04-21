@@ -929,8 +929,11 @@ h6, .h6 {
 }
 .blog-post-title {
     margin-bottom: 5px;
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
+}
+.blog-post-title a {
+    color: #333;
 }
 .blog-post-meta {
     margin-bottom: 20px;
@@ -974,7 +977,6 @@ h6, .h6 {
     display: block;
     margin: auto;
     max-width: 80%;
-    width: 80%;
 }
 
 @media screen and (max-width: 450px) {

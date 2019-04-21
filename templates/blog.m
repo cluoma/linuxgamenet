@@ -31,13 +31,13 @@
         {{#posts}}
         <div class="blog-post">
         {{#rewrite}}
-        <a href="/post/{{p_id}}"><h2 class="blog-post-title">{{title}}</h2></a>
+        <h2 class="blog-post-title"><a href="/post/{{p_id}}">{{title}}</a></h2>
         {{/rewrite}}
         {{^rewrite}}
-        <a href="{{script_name}}?page={{page_name}}&id={{p_id}}"><h2 class="blog-post-title">{{title}}</h2></a>
+        <h2 class="blog-post-title"><a href="{{script_name}}?page={{page_name}}&id={{p_id}}">{{title}}</a></h2>
         {{/rewrite}}
         <p class="blog-post-meta">{{time}}</p>
-            {{&text}}
+            <p>{{&text}}</p>
         <hr style="border-color: #aaaaaa">
         {{#rewrite}}
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>
