@@ -1,4 +1,4 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html><html lang="en">
 <head>
 {{> head.m}}
 </head>
@@ -38,14 +38,14 @@
         {{/rewrite}}
         <p class="blog-post-meta">{{time}}</p>
             <p>{{&text}}</p>
-        <hr style="border-color: #aaaaaa">
+        <hr style="border-color: #aaaaaa; margin-top: 20px;">
         {{#rewrite}}
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>
         {{/rewrite}}
         {{^rewrite}}
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="{{script_name}}?tag={{.}}">{{.}}</a> {{/tags}}</p>
         {{/rewrite}}
-	
+	<hr style="border-color: #aaaaaa; margin-top: 18px; margin-bottom: 0px;">
 	<br>
 	<br>
 	<div id="commento"></div>
