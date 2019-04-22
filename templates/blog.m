@@ -86,12 +86,9 @@
 
     </div>
     <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-        <!-- About box sidebar module-->
-        <div class="sidebar-module sidebar-module-inset"><h4>About</h4>
-		<p>At Linux Game Network we try to provide the most recent news in the world of Linux gaming.</p>
-		<p>We'll cover new game releases, hardware, and have more in-depth reviews of big titles.</p>
-		<p>The options for Linux gamers are always getting better and we hope to show that.</p>
-        </div>
+
+        {{> about_box.m}}
+        
         <!-- Archives sidebar module-->
         <div class="sidebar-module"><h4>Archives</h4><ol class="list-unstyled">
             {{#archives}}
