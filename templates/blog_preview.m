@@ -35,14 +35,14 @@
             <a href="/post/{{p_id}}"><h2 class="blog-post-preview-title">{{title}}</h2></a>
             <p class="blog-post-meta">{{time}}</p>
             <p>{{byline}}</p>
-            <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>
+            <p style="clear: both; margin: 0px;">{{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>
             {{/rewrite}}
             {{^rewrite}}
             <a href="{{script_name}}?page={{page_name}}&id={{p_id}}"><img class="blog-post-preview-img" src="/images/{{thumbnail}}" alt="Thumbnail for post: {{title}}"></a>
             <a href="{{script_name}}?page={{page_name}}&id={{p_id}}"><h2 class="blog-post-preview-title">{{title}}</h2></a>
             <p class="blog-post-meta">{{time}}</p>
             <p>{{byline}}</p>
-            <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="{{script_name}}?tag={{.}}">{{.}}</a> {{/tags}}</p>
+            <p style="clear: both; margin: 0px;">{{#tags}}<a class="blog-post-tag" href="{{script_name}}?tag={{.}}">{{.}}</a> {{/tags}}</p>
             {{/rewrite}}
         </div>
         {{/posts}}
