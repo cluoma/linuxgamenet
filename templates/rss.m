@@ -3,17 +3,17 @@
 <channel>
 
   <title>{{title}}</title>
-  {{#rewrite}}<link>https://mywebsite.com/{{page_name}}</link>{{/rewrite}}{{^rewrite}}<link>https://mywebsite.com{{script_name}}?page={{page_name}}</link>{{/rewrite}}
-  <description>My temporary description.</description>
+  {{#rewrite}}<link>https://linuxgame.net/{{page_name}}</link>{{/rewrite}}{{^rewrite}}<link>https://linuxgame.net{{script_name}}?page={{page_name}}</link>{{/rewrite}}
+  <description>Linux gaming news, reviews, and more!</description>
   <language>en-ca</language>
-  <category>Blogging</category>
+  <category>Linux gaming</category>
   <copyright>Copyright {{current_year}} {{owner}}</copyright>
 
   {{#posts}}
   <item>
     <title>{{title}}</title>
-    {{#rewrite}}<link>https://mywebsite.com/post/{{p_id}}</link>{{/rewrite}}{{^rewrite}}<link>https://mywebsite.com{{script_name}}?page={{page_name}}&id={{p_id}}</link>{{/rewrite}}
-    {{#rewrite}}<guid>https://mywebsite.com/post/{{p_id}}</guid>{{/rewrite}}{{^rewrite}}<guid>https://mywebsite.com{{script_name}}?page={{page_name}}&id={{p_id}}</guid>{{/rewrite}}
+    {{#rewrite}}<link>https://linuxgame.net/post/{{p_id}}</link>{{/rewrite}}{{^rewrite}}<link>https://linuxgame.net{{script_name}}?page={{page_name}}&id={{p_id}}</link>{{/rewrite}}
+    {{#rewrite}}<guid>https://linuxgame.net/post/{{p_id}}</guid>{{/rewrite}}{{^rewrite}}<guid>https://linuxgame.net{{script_name}}?page={{page_name}}&id={{p_id}}</guid>{{/rewrite}}
     <description>{{byline}}</description>
     {{#tags}}<category>{{.}}</category>{{/tags}}
     <pubDate>{{time_rss}}</pubDate>
