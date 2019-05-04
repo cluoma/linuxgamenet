@@ -14,7 +14,8 @@
     <title>{{title}}</title>
     {{#rewrite}}<link>https://linuxgame.net/post/{{p_id}}</link>{{/rewrite}}{{^rewrite}}<link>https://linuxgame.net{{script_name}}?page={{page_name}}&id={{p_id}}</link>{{/rewrite}}
     {{#rewrite}}<guid>https://linuxgame.net/post/{{p_id}}</guid>{{/rewrite}}{{^rewrite}}<guid>https://linuxgame.net{{script_name}}?page={{page_name}}&id={{p_id}}</guid>{{/rewrite}}
-    <description>{{byline}}</description>
+    <description><![CDATA[<img src="https://linuxgame.net/images/{{thumbnail}}" alt="Article thumbnail" height=200>
+    <p>{{byline}}</p>]]></description>
     {{#tags}}<category>{{.}}</category>{{/tags}}
     <pubDate>{{time_rss}}</pubDate>
   </item>
