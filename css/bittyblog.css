@@ -228,7 +228,9 @@ ul {
     margin-left: -15px
 }
 .col-sm-3,
-.col-sm-8 {
+.col-sm-4,
+.col-sm-8,
+.col-sm-9 {
     position: relative;
     min-height: 1px;
     padding-right: 15px;
@@ -236,11 +238,19 @@ ul {
 }
 @media (min-width: 768px) {
     .col-sm-3,
-    .col-sm-8 {
+    .col-sm-4,
+    .col-sm-8,
+    .col-sm-9 {
         float: left
     }
     .col-sm-8 {
         width: 66.66666667%
+    }
+    .col-sm-9 {
+        width: 75%;
+    }
+    .col-sm-4 {
+        width: 33.33333333%;
     }
     .col-sm-3 {
         width: 25%
@@ -977,6 +987,10 @@ h6, .h6 {
     text-decoration: none;
     display: inline-block;
 }
+.blog-post-tag:hover {
+    color: white;
+    background-color: #3570a3;
+}
 .blog-post-preview-card {
     background-color: white;
     border-style: solid;
@@ -1101,3 +1115,80 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+
+
+/* Sharing Buttons */
+.blog-comment-share-line {
+    text-align: right;
+    margin-bottom: 20px;
+}
+.resp-sharing-button__link,
+.resp-sharing-button__icon {
+    display: inline-block;
+}
+
+.resp-sharing-button__link {
+  text-decoration: none;
+  color: #fff;
+  margin: 0.5em;
+  margin-top: 0px;
+}
+.resp-sharing-button__link:hover {
+    color: #fff;
+}
+
+.resp-sharing-button {
+  border-radius: 5px;
+  transition: 25ms ease-out;
+  padding: 0.5em 0.75em;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-size: 12px;
+}
+
+.resp-sharing-button__icon svg {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: middle
+}
+
+.resp-sharing-button--small svg {
+  margin: 0;
+  vertical-align: middle
+}
+
+/* Non solid icons get a stroke */
+.resp-sharing-button__icon {
+  stroke: #fff;
+  fill: none
+}
+
+/* Solid icons get a fill */
+.resp-sharing-button__icon--solid,
+.resp-sharing-button__icon--solidcircle {
+  fill: #fff;
+  stroke: none
+}
+
+.resp-sharing-button--facebook {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+.resp-sharing-button--facebook:hover,
+.resp-sharing-button--facebook:active {
+  background-color: #2d4373;
+  border-color: #2d4373;
+}
+
+.resp-sharing-button--twitter {
+  background-color: #55acee;
+  border-color: #55acee;
+}
+.resp-sharing-button--twitter:hover,
+.resp-sharing-button--twitter:active {
+  background-color: #2795e9;
+  border-color: #2795e9;
+}
+
+
