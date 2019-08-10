@@ -10,7 +10,7 @@
 
     <!--{{> twitch_banner.m}}-->
 
-    <div class="col-sm-8 blog-main">
+    <div class="col-sm-9 blog-main">
 
         {{#search}}
         <!-- Search notification box -->
@@ -81,7 +81,7 @@
         {{/nav_buttons}}
 
     </div>
-    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="col-sm-3 blog-sidebar">
         {{> about_box.m}}
         <!-- Archives sidebar module-->
         <div class="sidebar-module"><h4>Archives</h4><ol class="list-unstyled">

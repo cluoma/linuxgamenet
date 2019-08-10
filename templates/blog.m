@@ -7,7 +7,7 @@
 <meta name="author" content="Garpike">
 <meta name="keywords" content="gaming, linux, games, oss, news, reviews">
 <title>{{#posts}}{{title}} - {{owner}}{{/posts}}{{^posts}}{{title}}{{/posts}}</title>
-<link rel="stylesheet" href="/css/bittyblog2.css" />
+<link rel="stylesheet" href="/css/bittyblog.css" />
 <style>body {padding-top: 70px;}</style>
 <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
 <link rel="apple-touch-icon" href="/images/favicon.png" />

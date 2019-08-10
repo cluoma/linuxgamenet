@@ -213,6 +213,11 @@ ul {
         width: 750px
     }
 }
+@media (min-width: 950px) {
+    .container {
+        width: 930px
+    }
+}
 @media (min-width: 992px) {
     .container {
         width: 970px
@@ -795,7 +800,7 @@ input[type=checkbox]:focus {
 /*
  * pre blocks
  */
-pre {
+.blog-post > pre {
     overflow: auto;
     font-family: monospace, monospace;
     font-size: 1em;
@@ -817,7 +822,7 @@ pre {
     border: 1px solid #ccc;
     border-radius: 4px
 }
-pre quote {
+.blog-post > pre quote {
     font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -1005,8 +1010,8 @@ h6, .h6 {
     float: right;
     object-fit: cover;
     object-position: 50% 50%;
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 267px;
     margin: -8px;
     margin-left: 20px;
     margin-bottom: 0px;
