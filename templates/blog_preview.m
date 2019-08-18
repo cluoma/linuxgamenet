@@ -3,30 +3,31 @@
 {{> head.m}}
 </head>
 
+<body>
+
 {{> navbar.m}}
 
 <div class="container">
-<div class="row">
-
+    <div class="row">
     <!--{{> twitch_banner.m}}-->
 
-    <div class="col-sm-9 blog-main">
+    <div class="col-sm-9">
 
         {{#search}}
         <!-- Search notification box -->
-        <div class="panel panel-default" style="border-color: #428bca">
-        <div class="panel-heading" style="background-color: #428bca; color: #fff">Search</div>
+        <div class="panel panel-default">
+        <div class="panel-heading">Search</div>
         <div class="panel-body">
-        <p>Showing blog posts containing the search phrase: <b>{{.}}</b></p>
+        <div class="blog-post-text" style="margin-top:0;">Showing blog posts containing the search phrase: <b>{{.}}</b></div>
         </div>
         </div>
         {{/search}}
         {{#tag}}
         <!-- Search notification box -->
-        <div class="panel panel-default" style="border-color: #428bca">
-        <div class="panel-heading" style="background-color: #428bca; color: #fff">Tag</div>
+        <div class="panel panel-default">
+        <div class="panel-heading">Tag</div>
         <div class="panel-body">
-        <p>Showing blog posts sorted under the tag: <b>{{.}}</b></p>
+        <div class="blog-post-text" style="margin-top:0;">Showing blog posts sorted under the tag: <b>{{.}}</b></div>
         </div>
         </div>
         {{/tag}}
@@ -35,8 +36,8 @@
         <div class="blog-post-preview-card">
             {{#rewrite}}
             <a href="/post/{{p_id}}"><img class="blog-post-preview-img" src="/images/{{thumbnail}}" alt="Thumbnail for post: {{title}}"></a>
-            <a href="/post/{{p_id}}"><h2 class="blog-post-preview-title">{{title}}</h2></a>
-            <p class="blog-post-meta">{{time}}</p>
+            <h2 class="blog-post-preview-title"><a href="/post/{{p_id}}">{{title}}</a></h2>
+            <p class="blog-post-preview-meta">{{time}}</p>
             <p>{{byline}}</p>
             <p style="clear: both; margin: 0px;">{{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>
             {{/rewrite}}
@@ -81,23 +82,14 @@
         {{/nav_buttons}}
 
     </div>
-    <div class="col-sm-3 blog-sidebar">
-        {{> about_box.m}}
-        <!-- Archives sidebar module-->
-        <div class="sidebar-module"><h4>Archives</h4><ol class="list-unstyled">
-            {{#archives}}
-            {{#rewrite}}
-            <li><a href="/archive/{{year}}/{{month}}">{{month_s}} {{year}} ({{post_count}})</a></li>
-            {{/rewrite}}
-            {{^rewrite}}
-            <li><a href="{{script_name}}?month={{month}}&year={{year}}">{{month_s}} {{year}} ({{post_count}})</a></li>
-            {{/rewrite}}
-            {{/archives}}
-        </ol></div>
+    <div class="col-sm-3">
+        {{> sidebar.m}}
     </div>
 </div>
 
 </div>
+
+</body>
 
 {{> footer.m}}
 

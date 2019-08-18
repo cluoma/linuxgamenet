@@ -7,13 +7,13 @@
 
 <div class="container">
 <div class="row">
-    <div class="col-sm-8 blog-main">
+    <div class="col-sm-9">
     
     {{#posts}}
-    <div class="panel panel-default" style="border-color: #428bca">
-    <div class="panel-heading" style="background-color: #428bca; color: #fff">{{title}}</div>
-    <div class="panel-body" style="font-size: 15px;">
-    <p>{{&text}}</p>
+    <div class="panel">
+    <div class="panel-heading">{{title}}</div>
+    <div class="panel-body">
+    <div class="blog-post-text" style="margin-top:0;">{{&text}}</div>
     </div>
     </div>
     {{/posts}}
@@ -50,21 +50,8 @@
 
     </div>
 
-    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-        
-        {{> about_box.m}}
-        
-        <!-- Archives sidebar module-->
-        <div class="sidebar-module"><h4>Archives</h4><ol class="list-unstyled">
-            {{#archives}}
-            {{#rewrite}}
-            <li><a href="/archive/{{year}}/{{month}}">{{month_s}} {{year}} ({{post_count}})</a></li>
-            {{/rewrite}}
-            {{^rewrite}}
-            <li><a href="{{script_name}}?month={{month}}&year={{year}}">{{month_s}} {{year}} ({{post_count}})</a></li>
-            {{/rewrite}}
-            {{/archives}}
-        </ol></div>
+    <div class="col-sm-3">
+        {{> sidebar.m}}
     </div>
 
 </div>

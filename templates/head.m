@@ -6,7 +6,7 @@
 <meta name="keywords" content="gaming, linux, games, oss, news, reviews">
 <title>{{title}}</title>
 <!-- bittyblog core CSS -->
-<link href="/css/bittyblog.css" rel="stylesheet">
+<link href="/css/bittyblog.min.css" rel="stylesheet">
 <style>body {padding-top: 70px;}</style>
 <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
 <link rel="apple-touch-icon" href="/images/favicon.png" />

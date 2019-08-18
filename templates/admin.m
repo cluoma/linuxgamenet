@@ -152,7 +152,7 @@
     <div class="blog-post">
         <h2 class="blog-post-title">{{title}}</h2>
         <p class="blog-post-meta">{{time}}</p>
-        <p>{{&text_formatted}}</p>
+        <div class="blog-post-text">{{&text_formatted}}</div>
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="#">{{.}}</a> {{/tags}}</p>
     </div>
     {{/posts}}
