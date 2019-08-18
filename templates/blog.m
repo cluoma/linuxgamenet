@@ -21,7 +21,7 @@
     
     <!--{{> twitch_banner.m}}-->
     
-    <div class="col-sm-8" style="margin-right:8.333333%">
+    <div class="col-sm-9">
 
         {{#search}}
         <!-- Search notification box -->
