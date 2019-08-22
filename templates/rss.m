@@ -2,7 +2,7 @@
 <rss version="2.0">
 <channel>
 
-  <title>{{title}} - {{page_name}}</title>
+  <title>{{navbar_title}} - {{page_name}}</title>
   {{#rewrite}}<link>https://linuxgame.net/{{page_name}}</link>{{/rewrite}}{{^rewrite}}<link>https://linuxgame.net{{script_name}}?page={{page_name}}</link>{{/rewrite}}
   <description>Linux gaming news, reviews, and more!</description>
   <language>en-ca</language>
