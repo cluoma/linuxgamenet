@@ -3,9 +3,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Linux Game Network is the source for all things related Linux, gaming, and Linux gaming. News, reviews, and more.">
+<meta name="description" content="{{#posts}}{{byline}}{{/posts}}">
 <meta name="author" content="Garpike">
-<meta name="keywords" content="gaming, linux, games, oss, news, reviews">
+<meta name="keywords" content="gaming, linux, video games, news, reviews{{#posts}}{{#tags}}, {{.}}{{/tags}}{{/posts}}">
 <title>{{#posts}}{{title}} - {{owner}}{{/posts}}{{^posts}}{{title}}{{/posts}}</title>
 <link rel="stylesheet" href="/css/bittyblog.min.css" />
 <style>body {padding-top: 70px;}</style>
