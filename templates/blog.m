@@ -44,12 +44,8 @@
 
         {{#posts}}
         <div class="blog-post">
-        {{#rewrite}}
+
         <h2 class="blog-post-title">{{title}}</h2>
-        {{/rewrite}}
-        {{^rewrite}}
-        <h2 class="blog-post-title">{{title}}</h2>
-        {{/rewrite}}
         
         <p class="blog-post-meta">{{time}}</p>
 
