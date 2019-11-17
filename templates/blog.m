@@ -12,6 +12,12 @@
 <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
 <link rel="apple-touch-icon" href="/images/favicon.png" />
 <link rel="canonical" href="https://www.linuxgame.net/post/{{#posts}}{{p_id}}{{/posts}}" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@LinuxGameDotNet" />
+<meta name="twitter:title" content="{{#posts}}{{title}}{{/posts}}" />
+<meta name="twitter:description" content="{{#posts}}{{byline}}{{/posts}}" />
+<meta name="twitter:image" content="https://www.linuxgame.net/images/{{#posts}}{{thumbnail}}{{/posts}}" />
 </head>
 
 {{> navbar.m}}
