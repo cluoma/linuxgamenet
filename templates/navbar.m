@@ -27,10 +27,10 @@
         {{#pages}}
         <li>
             {{#rewrite}}
-            <a {{#active}}class="active"{{/active}}href="/{{id_name}}">{{name}}</a>
+            <a {{#active}}class="active"{{/active}} href="/{{id_name}}">{{name}}</a>
             {{/rewrite}}
             {{^rewrite}}
-            <a {{#active}}class="active"{{/active}}href="{{script_name}}?page={{id_name}}">{{name}}</a>
+            <a {{#active}}class="active"{{/active}} href="{{script_name}}?page={{id_name}}">{{name}}</a>
             {{/rewrite}}
         </li>
         {{/pages}}
