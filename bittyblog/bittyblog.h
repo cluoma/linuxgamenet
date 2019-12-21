@@ -41,11 +41,6 @@ typedef struct {
     bb_vec *tags;
 } Post;
 
-typedef struct {
-    Post *p;
-    int n;
-} vector_p;
-
 // Style definitions
 enum bb_page_styles {
     BLOG_FULL_POST  = 0,
@@ -102,5 +97,8 @@ void bb_load_posts(bb_page_request *);
 bb_vec * bb_image_list(bb_page_request *, int thumbnail_only);
 bb_vec * tokenize_tags(const char *str, const char * delim);
 long bb_strtol(char *str, long def);
+
+int bb_check_accept_encoding(const char *enc);
+unsigned long bb_gzip_compress(const char* input, int inputSize, char* output, int outputSize);
 
 #endif /* bittyblog_h */

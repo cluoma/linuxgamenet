@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <zlib.h>
 #include "bittyblog.h"
 #include "cgi.h"
 #include "vec.h"
@@ -86,8 +87,6 @@ void handle_rewrite(bb_page_request *req)
         bb_cgi_add_var(&(req->q_vars), "start", start, strlen(start)+1);
     }
 
-
-
     // Free everything
     free(search); free(start);
     free(uri0); free(uri1); free(uri2);
@@ -113,7 +112,6 @@ void bb_free(bb_page_request *req)
 
     // Free list of posts
     if (req->posts != NULL) {
-        //vector_p_free(req->posts);
         bb_vec_free(req->posts);
     }
 }
@@ -311,4 +309,46 @@ long bb_strtol(char *str, long def)
     } else {
         return ret_val;
     }
+}
+
+int bb_check_accept_encoding(const char *enc)
+{
+    char *accept_encoding = GET_ENV_VAR("HTTP_ACCEPT_ENCODING");
+
+    if (accept_encoding == NULL) return 0;
+    if (strstr(accept_encoding, enc) == NULL) return 0;
+
+    return 1;
+}
+
+// Compress a buffer using gzip, return compressed data in a new buffer
+unsigned long bb_gzip_compress(const char* buf, int buf_len, char* out, int out_len)
+{
+    // *cmp_len = compressBound(buf_len);
+    // char *cmp_buf = malloc(*cmp_len);
+
+    // int r = compress2(cmp_buf, cmp_len, buf, buf_len, Z_BEST_COMPRESSION);
+
+    // if ( r != Z_OK ) {
+    //     free(cmp_buf);
+    //     return NULL;
+    // }
+    // return cmp_buf;
+
+    // Initialize stream
+    z_stream zs;
+    zs.zalloc = Z_NULL;
+    zs.zfree = Z_NULL;
+    zs.opaque = Z_NULL;
+    zs.avail_in = (uInt)buf_len;
+    zs.next_in = (Bytef *)buf;
+    zs.avail_out = (uInt)out_len;
+    zs.next_out = (Bytef *)out;
+
+    // Adding 16 to window bits tells zlib to create gzip headers
+    deflateInit2(&zs, Z_BEST_COMPRESSION, Z_DEFLATED, 15 | 16, 8, Z_DEFAULT_STRATEGY);
+    deflate(&zs, Z_FINISH);
+    deflateEnd(&zs);
+
+    return zs.total_out;
 }
