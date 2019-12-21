@@ -32,6 +32,6 @@
 <div class="panel">
     <div class="panel-heading">Game Servers</div>
     <div class="panel-body">
-    <a href="https://www.linuxgame.net/post/126">Minecraft (v1.14.4 survival)</a>
+    <a href="https://www.linuxgame.net/post/126">Minecraft (v1.15 survival)</a>
     </div>
 </div>
