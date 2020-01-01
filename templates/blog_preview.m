@@ -37,7 +37,7 @@
         <div class="panel panel-default">
         <div class="panel-heading">Author</div>
         <div class="panel-body">
-        <div class="blog-post-text" style="margin-top:0;">Showing blog posts written by: <b>{{user_name}}</b></div>
+        <div class="blog-post-text" style="margin-top:0;">{{user_about}}<br><br>Showing blog posts written by: <b>{{user_name}}</b></div>
         </div>
         </div>
         {{/author}}
@@ -48,14 +48,14 @@
             {{#rewrite}}
             <a href="/post/{{p_id}}"><img class="blog-post-preview-img" src="/images/{{thumbnail}}" alt="Thumbnail for post: {{title}}"></a>
             <h2 class="blog-post-preview-title"><a href="/post/{{p_id}}">{{title}}</a></h2>
-            <p class="blog-post-preview-meta">{{time}}</p>
+            <p class="blog-post-preview-meta">By <a href="/author/{{user_name_id}}">{{user_name}}</a>, {{time}}</p>
             <p>{{byline}}</p>
             <p style="clear: both; margin: 0px;">{{#tags}}<a class="blog-post-tag" href="/tag/{{.}}">{{.}}</a> {{/tags}}</p>
             {{/rewrite}}
             {{^rewrite}}
             <a href="{{script_name}}?page={{page_name}}&id={{p_id}}"><img class="blog-post-preview-img" src="/images/{{thumbnail}}" alt="Thumbnail for post: {{title}}"></a>
             <a href="{{script_name}}?page={{page_name}}&id={{p_id}}"><h2 class="blog-post-preview-title">{{title}}</h2></a>
-            <p class="blog-post-meta">{{time}}</p>
+            <p class="blog-post-preview-meta">By <a href="{{script_name}}?author={{user_name_id}}">{{user_name}}</a>, {{time}}</p>
             <p>{{byline}}</p>
             <p style="clear: both; margin: 0px;">{{#tags}}<a class="blog-post-tag" href="{{script_name}}?tag={{.}}">{{.}}</a> {{/tags}}</p>
             {{/rewrite}}

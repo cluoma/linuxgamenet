@@ -53,7 +53,8 @@
 
         <h2 class="blog-post-title">{{title}}</h2>
         
-        <p class="blog-post-meta">{{time}}</p>
+        {{#rewrite}}<p class="blog-post-meta">By <a href="/author/{{user_name_id}}">{{user_name}}</a>, {{time}}</p>{{/rewrite}}
+        {{^rewrite}}<p class="blog-post-meta">By <a href="{{script_name}}?author={{user_name_id}}">{{user_name}}</a>, {{time}}</p>{{/rewrite}}
 
         <!-- Sharingbutton Facebook -->
         <a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.linuxgame.net%2Fpost%2F{{p_id}}" target="_blank" rel="noopener" aria-label="Share on Facebook">
