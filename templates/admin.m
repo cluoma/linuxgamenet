@@ -9,6 +9,7 @@
 
     <div class="admin-sidenav">
         <h3>{{navbar_title}}</h3>
+        <a href="{{script_name}}?sid={{sid}}&c=users">Users</a>
         <a href="{{script_name}}?sid={{sid}}&c=pages">Pages</a>
         <a href="{{script_name}}?sid={{sid}}&c=posts">Posts</a>
         <a href="{{script_name}}?sid={{sid}}&c=media">Images</a>
@@ -16,6 +17,79 @@
 
     <div class="admin-main">
     
+    <h1>Logged in as {{user}}</h1>
+
+    {{#category_users}}
+    <h1> Users: </h1>
+
+    <!-- New Page Button -->
+    <form action="{{script_name}}" method="GET">
+        <input type="hidden" name="sid" value="{{sid}}" />
+        <input type="hidden" name="c" value="users" />
+        <input type="hidden" name="a" value="new" />
+        <button type="submit">New User</button><br>
+    </form>
+    <br>
+
+    <table>
+        <tr><th>Edit</th><th>ID</th><th>Email</th><th>URL Name ID</th><th>Proper Name</th><th>Delete</th></tr>
+        {{#users}}
+        <tr>
+            <td><a href="{{script_name}}?sid={{sid}}&c=users&a=update&id={{id}}">Edit</a></td>
+            <td>{{id}}</td><td>{{email}}</td><td>{{name_id}}</td><td>{{name}}</td>
+            <td>
+                <form action="{{script_name}}?sid={{sid}}&c=users&a=delete" method="POST">
+                <input type="hidden" name="id" value="{{id}}" />
+                <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {{/users}}
+    </table>
+    {{/category_users}}
+
+    {{#category_new_users}}
+    <form role="form" method="post" action="{{script_name}}?sid={{sid}}&c=users&a=new">
+        <label for="email">Email:</label><br><textarea name="email" id="email" rows="1" cols="100"></textarea><br>
+        <label for="password">Password:</label><br><textarea name="password" id="password" rows="1" cols="100"></textarea><br>
+        <label for="name_id">URL Name ID:</label><br><textarea name="name_id" id="name_id" rows="1" cols="100"></textarea><br>
+        <label for="name">Name:</label><br><textarea name="name" id="name" rows="1" cols="100"></textarea><br>
+        <label for="about">About:</label><br><textarea name="about" id="about" rows="1" cols="100"></textarea><br>
+        <div>
+        <label for="thumbnail">Thumbnail: </label>
+        <select name="thumbnail" id="thumbnail">
+            {{#images}}
+            <option value="{{filename}}" {{#selected}}selected{{/selected}}>{{filename}}</option>
+            {{/images}}
+        </select>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    {{/category_new_users}}
+
+    <!-- Different types of forms for posts edit, and create -->
+    {{#category_edit_users}}
+    {{#users}}
+    <form role="form" method="post" action="{{script_name}}?sid={{sid}}&c=users&a=update">
+        <label for="email">Email:</label><br><textarea name="email" id="email" rows="1" cols="100">{{email}}</textarea><br>
+        <label for="name_id">URL Name ID:</label><br><textarea name="name_id" id="name_id" rows="1" cols="100">{{name_id}}</textarea><br>
+        <label for="name">Name:</label><br><textarea name="name" id="name" rows="1" cols="100">{{name}}</textarea><br>
+        <label for="about">About:</label><br><textarea name="about" id="about" rows="1" cols="100">{{about}}</textarea><br>
+        <div>
+        <label for="thumbnail">Thumbnail: </label>
+        <select name="thumbnail" id="thumbnail">
+            {{#images}}
+            <option value="{{filename}}" {{#selected}}selected{{/selected}}>{{filename}}</option>
+            {{/images}}
+        </select>
+        </div>
+        <input id="id" name="id" type="hidden" value="{{id}}">
+        <button type="submit">Submit</button>
+    </form>
+    {{/users}}
+    {{/category_edit_users}}
+
+
     {{#category_pages}}
     <h1> Your Pages: </h1>
 
@@ -25,7 +99,8 @@
         <input type="hidden" name="c" value="pages" />
         <input type="hidden" name="a" value="new" />
         <button type="submit">New Page</button><br>
-    </form> 
+    </form>
+    <br>
 
     <table>
         <tr><th>Edit</th><th>ID</th><th>ID Name</th><th>Proper Name</th><th>Style</th><th>Tags</th><th>Delete</th></tr>
@@ -94,14 +169,16 @@
         <input type="hidden" name="c" value="posts" />
         <input type="hidden" name="a" value="new" />
         <button type="submit">New Post</button><br>
-    </form> 
+    </form>
+    <br>
 
     <table>
-        <tr><th>Edit</th><th>Published</th><th>Page</th><th>Title</th><th>Byline</th><th>Time</th><th>Delete</th></tr>
+        <tr><th>Edit</th><th>Published</th><th>Page</th><th>Title</th><th>Byline</th><th>Time</th><th>Author</th><th>Delete</th></tr>
         {{#posts}}
         <tr>
             <td><a href="{{script_name}}?sid={{sid}}&p_id={{p_id}}">Edit</a></td>
-            <td>{{#visible}}Published{{/visible}}{{^visible}}<b>Hidden</b>{{/visible}}</td><td>{{page}}</td><td>{{title}}</td><td>{{byline}}</td><td>{{time}}</td>
+            <td>{{#visible}}Published{{/visible}}{{^visible}}<b>Hidden</b>{{/visible}}</td><td>{{page}}</td>
+            <td>{{title}}</td><td>{{byline}}</td><td>{{time}}</td><td>{{user_name}}</td>
             <td>
                 <form action="{{script_name}}?sid={{sid}}&c=posts&a=delete" method="POST">
                 <input type="hidden" name="post_id" value="{{p_id}}" />
@@ -134,6 +211,14 @@
             {{/pages}}
         </select>
         </div>
+        <div>
+        <label for="post_user_id">Author: </label>
+        <select name="post_user_id" id="post_user_id">
+            {{#users}}
+            <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+            {{/users}}
+        </select>
+        </div>
         <label for="post_title">Title:</label><br><textarea name="post_title" id="post_title" rows="1" cols="100">{{title}}</textarea><br>
         <label for="post_byline">Byline:</label><br><textarea name="post_byline" id="post_byline" rows="1" cols="100">{{byline}}</textarea><br>
         <label for="post_time">Time:</label><br><input type="number" min="0" name="post_time" id="post_time" rows="1" value="{{time_r}}"><br>
@@ -152,7 +237,7 @@
     <div class="blog-post">
         <h2 class="blog-post-title">{{title}}</h2>
         <p class="blog-post-meta">{{time}}</p>
-        <div class="blog-post-text">{{&text_formatted}}</div>
+        <p>{{&text_formatted}}</p>
         <p style="clear: both; margin: 0px;"><b>Tags:</b> {{#tags}}<a class="blog-post-tag" href="#">{{.}}</a> {{/tags}}</p>
     </div>
     {{/posts}}
@@ -176,6 +261,14 @@
             {{/pages}}
         </select>
         </div>
+        <div>
+        <label for="post_user_id">Author: </label>
+        <select name="post_user_id" id="post_user_id">
+            {{#users}}
+            <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+            {{/users}}
+        </select>
+        </div>
         <label for="post_title">Title:</label><br><textarea name="post_title" id="post_title" rows="1" cols="100"></textarea><br>
         <label for="post_byline">Byline:</label><br><textarea name="post_byline" id="post_byline" rows="1" cols="100"></textarea><br>
         <label for="post_time">Time:</label><br><input type="number" min="0" name="post_time" id="post_time" rows="1"><br>
@@ -195,6 +288,7 @@
         <input type="file" name="media_upload" accept="image/*">
         <button type="submit">Upload Image</button><br>
     </form>
+    <br>
 
     <table>
         <tr><th>Delete</th><th>Image Name</th><th>Thumbnail</th>

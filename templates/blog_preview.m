@@ -12,7 +12,8 @@
     <!--{{> twitch_banner.m}}-->
 
     <div class="col-sm-9">
-
+        
+        {{#special_info_box}}
         {{#search}}
         <!-- Search notification box -->
         <div class="panel panel-default">
@@ -31,6 +32,16 @@
         </div>
         </div>
         {{/tag}}
+        {{#author}}
+        <!-- Author notification box -->
+        <div class="panel panel-default">
+        <div class="panel-heading">Author</div>
+        <div class="panel-body">
+        <div class="blog-post-text" style="margin-top:0;">Showing blog posts written by: <b>{{user_name}}</b></div>
+        </div>
+        </div>
+        {{/author}}
+        {{/special_info_box}}
 
         {{#posts}}
         <div class="blog-post-preview-card">

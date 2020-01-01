@@ -10,6 +10,21 @@
 #include "bittyblog.h"
 #include "config.h"
 
+#define COPY_SQLITE3_STRING(X, Y, Z) \
+    if (sqlite3_column_type((Y), (Z)) == SQLITE_TEXT) { \
+        (X) = calloc(sqlite3_column_bytes((Y), (Z)) + 1, 1); \
+        memcpy((X), (char *)sqlite3_column_text((Y), (Z)), sqlite3_column_bytes((Y), (Z))); \
+    }
+#define COPY_SQLITE3_INT(X, Y, Z) \
+    if (sqlite3_column_type((Y), (Z)) == SQLITE_INTEGER) { \
+        (X) = sqlite3_column_int((Y), (Z)); \
+    }
+#define COPY_SQLITE3_INT64(X, Y, Z) \
+    if (sqlite3_column_type((Y), (Z)) == SQLITE_INTEGER) { \
+        (X) = sqlite3_column_int((Y), (Z)); \
+    }
+
+
 // String months
 char * ENG_MONTH[] = {
     "",
@@ -50,8 +65,13 @@ sqlite3 *open_database()
  *  Execute query function takes arguments to prepare a statement then
  *  executes the query. A callback must be provided to deal with the results.
  * 
- *  If NULL is supplied as the first argument, then a connection is opened
+ *  If NULL is supplied as the db argument, then a connection is opened
  *  to execute the given query.
+ * 
+ *  If callback is NULL, the query will be executed once using sqlite3_step
+ * 
+ *  If callback is NULL, and data is NOT NULL, first column of first row of results
+ *  will be stored as an int in data.
  * 
  *  Arguments will be bound to the query in order, according to the types string
  *  types is a string consisting of:
@@ -60,8 +80,6 @@ sqlite3 *open_database()
  *  eg. "ssis" will bind arguments as string, string, int, string
  * 
  *  Callbacks MUST return 0, otherwise resources will be freed and NULL returned.
- * 
- *  If no callback is supplied, the query will be executed once using sqlite3_step
  */
 int execute_query(sqlite3* db, int (*callback)(sqlite3_stmt*, void*), void* data,
                   const char* query, const char* types, ...) {
@@ -201,60 +219,50 @@ int load_posts_cb(sqlite3_stmt *results, void* data) {
     while(sqlite3_step(results) == SQLITE_ROW)
     {
         // Realloc memory for a new post
-        Post *post = malloc(sizeof(Post));
-        Post_init(post);
+        bb_post *post = malloc(sizeof(bb_post));
+        if (post == NULL) return 1;
+        if (bb_post_init(post) != 0)
+            return 1;
 
         int col_count = sqlite3_column_count(results);
-        for (int i = 0; i < col_count; i++) {
+        for (int i = 0; i < col_count; i++)
+        {
             const char* col_name = sqlite3_column_name(results, i);
             if (strcmp(col_name, "title") == 0) {
-                const char *title = (char *) sqlite3_column_text(results, i);
-                const int title_len = sqlite3_column_bytes(results, i);
-                post->title = calloc(title_len + 1, 1);
-                memcpy(post->title, title, title_len);
+                COPY_SQLITE3_STRING(post->title, results, i);
             } else if (strcmp(col_name, "id") == 0) {
-                post->p_id = sqlite3_column_int(results, i);
+                COPY_SQLITE3_INT(post->p_id, results, i);
             } else if (strcmp(col_name, "page_id") == 0) {
-                post->page_id = sqlite3_column_int(results, i);
+                COPY_SQLITE3_INT(post->page_id, results, i);
             } else if (strcmp(col_name, "page") == 0) {
-                const char *page_name = (char *) sqlite3_column_text(results, i);
-                const int page_name_len = sqlite3_column_bytes(results, i);
-                post->page = calloc(page_name_len + 1, 1);
-                memcpy(post->page, page_name, page_name_len);
+                COPY_SQLITE3_STRING(post->page, results, i);
             } else if (strcmp(col_name, "text") == 0) {
-                const char *text = (char *) sqlite3_column_text(results, i);
-                const int text_len = sqlite3_column_bytes(results, i);
-                post->text = calloc(text_len + 1, 1);
-                memcpy(post->text, text, text_len);
+                COPY_SQLITE3_STRING(post->text, results, i);
             } else if (strcmp(col_name, "time") == 0) {
-                const char *time = (char *) sqlite3_column_text(results, i);
-                const int time_len = sqlite3_column_bytes(results, i);
-                post->time = calloc(time_len + 1, 1);
-                memcpy(post->time, time, time_len);
+                COPY_SQLITE3_STRING(post->time, results, i);
             } else if (strcmp(col_name, "time_r") == 0) {
-                post->time_r = sqlite3_column_int64(results, i);
+                COPY_SQLITE3_INT64(post->time_r, results, i);
             } else if (strcmp(col_name, "byline") == 0) {
-                const char *byline = (char *) sqlite3_column_text(results, i);
-                const int byline_len = sqlite3_column_bytes(results, i);
-                post->byline = calloc(byline_len + 1, 1);
-                memcpy(post->byline, byline, byline_len);
-            }
-            // else if (strcmp(col_name, "extra") == 0) {
-                
-            // }
-            else if (strcmp(col_name, "thumbnail") == 0) {
-                const char *thumbnail   = (char *) sqlite3_column_text(results, i);
-                const int thumbnail_len = sqlite3_column_bytes(results, i);
-                post->thumbnail = calloc(thumbnail_len + 1, 1);
-                memcpy(post->thumbnail, thumbnail, thumbnail_len);
+                COPY_SQLITE3_STRING(post->byline, results, i);
+            } else if (strcmp(col_name, "thumbnail") == 0) {
+                COPY_SQLITE3_STRING(post->thumbnail, results, i);
             } else if (strcmp(col_name, "visible") == 0) {
-                post->visible = sqlite3_column_int(results, i);
+                COPY_SQLITE3_INT(post->visible, results, i);
             }
-            else if (strcmp(col_name, "tags") == 0) {
-                if (sqlite3_column_type(results, i) != SQLITE_NULL) {
-                    const char *tags = (char *) sqlite3_column_text(results, i);
-                    post->tags = tokenize_tags(tags, ",");
-                }
+            else if (strcmp(col_name, "tags") == 0 &&
+                     sqlite3_column_type(results, i) == SQLITE_TEXT) {
+                const char *tags = (char *) sqlite3_column_text(results, i);
+                post->tags = tokenize_tags(tags, ",");
+            } else if (strcmp(col_name, "user_id") == 0) {
+                COPY_SQLITE3_INT(post->user.id, results, i);
+            } else if (strcmp(col_name, "user_name_id") == 0) {
+                COPY_SQLITE3_STRING(post->user.name_id, results, i);
+            } else if (strcmp(col_name, "user_name") == 0) {
+                COPY_SQLITE3_STRING(post->user.name, results, i);
+            } else if (strcmp(col_name, "user_about") == 0) {
+                COPY_SQLITE3_STRING(post->user.about, results, i);
+            } else if (strcmp(col_name, "user_thumbnail") == 0) {
+                COPY_SQLITE3_STRING(post->user.thumbnail, results, i);
             }
         }
         bb_vec_add(vp, post);
@@ -262,19 +270,33 @@ int load_posts_cb(sqlite3_stmt *results, void* data) {
     return 0;
 }
 
+void vec_post_free(bb_post *p)
+{
+    bb_post_free(p);
+    free(p);
+}
 bb_vec * db_ntag(char* tag, int count, int offset)
 {
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 N_TAG_QUERY,
                 "sii", tag, count, offset);
     return all_posts;
 }
+bb_vec * db_nauthor(char* name_id, int count, int offset)
+{
+    bb_vec * all_posts = malloc(sizeof(bb_vec));
+    bb_vec_init(all_posts, vec_post_free);
+    execute_query(NULL, load_posts_cb, all_posts,
+                N_AUTHOR_QUERY,
+                "sii", name_id, count, offset);
+    return all_posts;
+}
 bb_vec * db_search(char* page_name_id, char *keyword)
 {   
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 SEARCH_QUERY,
                 "ss", page_name_id, keyword);
@@ -283,7 +305,7 @@ bb_vec * db_search(char* page_name_id, char *keyword)
 bb_vec * db_nsearch(char* page_name_id, char *keyword, int count, int offset)
 {
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 N_SEARCH_QUERY,
                 "ssii", page_name_id, keyword, count, offset);
@@ -292,7 +314,7 @@ bb_vec * db_nsearch(char* page_name_id, char *keyword, int count, int offset)
 bb_vec * db_monthyear(char* page_name_id, int month, int year)
 {
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 MONTH_YEAR_QUERY,
                 "sii", page_name_id,  month, year);
@@ -301,7 +323,7 @@ bb_vec * db_monthyear(char* page_name_id, int month, int year)
 bb_vec * db_nposts(char* page_name_id, int count, int offset)
 {
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 N_POSTS_QUERY,
                 "ssii", page_name_id, page_name_id,  count, offset);
@@ -310,7 +332,7 @@ bb_vec * db_nposts(char* page_name_id, int count, int offset)
 bb_vec * db_id(int id)
 {
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 POST_ID_QUERY,
                 "i", id);
@@ -332,7 +354,6 @@ int db_count(char* page_name_id)
     int count = 0;
 
     success = execute_query(NULL, db_count_cb, &count,
-        //"SELECT COUNT(1) FROM posts p INNER JOIN (SELECT * FROM pages WHERE name_id = @NAMEID) a ON p.page_id = a.id WHERE p.visible = 1 ",
         N_POSTS_COUNT_QUERY,
         "ss", page_name_id, page_name_id);
 
@@ -367,6 +388,19 @@ int db_tag_count(char* tag) {
     
     return 0;
 }
+int db_author_count(char* name_id) {
+    int success = 0;
+    int count = 0;
+
+    success = execute_query(NULL, db_count_cb, &count,
+        N_AUTHOR_COUNT_QUERY,
+        "s", name_id);
+
+    if (success && count)
+        return count;
+    
+    return 0;
+}
 
 /*
  * Get a list of pages from the database
@@ -378,18 +412,10 @@ int db_pages_cb(sqlite3_stmt* st, void* a) {
         // Realloc memory for a new post
         bb_page *page = malloc(sizeof(bb_page));
 
-        page->id = sqlite3_column_int(st, 0);
-        page->id_name = calloc(sqlite3_column_bytes(st, 1)+1, 1);
-        
-        memcpy(page->id_name,
-                sqlite3_column_text(st, 1),
-                sqlite3_column_bytes(st, 1));
-
-        page->name = calloc(sqlite3_column_bytes(st, 2)+1, 2);
-        memcpy(page->name,
-                sqlite3_column_text(st, 2),
-                sqlite3_column_bytes(st, 2));
-        page->style = sqlite3_column_int(st, 3);
+        COPY_SQLITE3_INT(page->id, st, 0);
+        COPY_SQLITE3_STRING(page->id_name, st, 1);
+        COPY_SQLITE3_STRING(page->name, st, 2);
+        COPY_SQLITE3_INT(page->style, st, 3);
 
         if (sqlite3_column_type(st, 4) != SQLITE_NULL) {
             const char *tags = (char *) sqlite3_column_text(st, 4);
@@ -419,13 +445,67 @@ bb_vec * db_pages()
     return pages;
 }
 
+/*
+ * Get a list of users from the database
+ */
+int db_users_cb(sqlite3_stmt* st, void* a) {
+    bb_vec *users = (bb_vec *)a;
+    while(sqlite3_step(st) == SQLITE_ROW)
+    {
+        // Realloc memory for a new post
+        bb_user *user = malloc(sizeof(bb_user));
+        bb_user_init(user);
+
+        COPY_SQLITE3_INT(user->id, st, 0);
+        COPY_SQLITE3_STRING(user->email, st, 1);
+        COPY_SQLITE3_STRING(user->name_id, st, 2);
+        COPY_SQLITE3_STRING(user->name, st, 3);
+        COPY_SQLITE3_STRING(user->about, st, 4);
+        COPY_SQLITE3_STRING(user->thumbnail, st, 5);
+
+        bb_vec_add(users, user);
+    }
+    return 0;
+}
+void db_users_free_cb(void *d) {
+    bb_user *user = (bb_user *)d;
+    bb_user_free(user);
+    free(user);
+}
+bb_vec * db_admin_all_users()
+{
+    bb_vec *users = malloc(sizeof(bb_vec));
+    bb_vec_init(users, db_users_free_cb);
+    
+    execute_query(NULL, db_users_cb, users, LOAD_USERS, "");
+    
+    return users;
+}
+bb_vec * db_admin_user(int id)
+{
+    bb_vec *users = malloc(sizeof(bb_vec));
+    bb_vec_init(users, db_users_free_cb);
+    
+    execute_query(NULL, db_users_cb, users, LOAD_USER_ID, "i", id);
+    
+    return users;
+}
+bb_vec * db_author(char *name_id)
+{
+    bb_vec *users = malloc(sizeof(bb_vec));
+    bb_vec_init(users, db_users_free_cb);
+    
+    execute_query(NULL, db_users_cb, users, USER_INFO_FROM_NAME_ID, "s", name_id);
+    
+    return users;
+}
 
 /*
  * Admin interface functions
  */
 bb_vec * db_admin_all_posts_preview() {
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 ADMIN_ALL_POSTS_QUERY,
                 "");
@@ -433,7 +513,7 @@ bb_vec * db_admin_all_posts_preview() {
 }
 bb_vec * db_admin_id(int id) {
     bb_vec * all_posts = malloc(sizeof(bb_vec));
-    bb_vec_init(all_posts, Post_free);
+    bb_vec_init(all_posts, vec_post_free);
     execute_query(NULL, load_posts_cb, all_posts,
                 ADMIN_POST_ID_QUERY,
                 "i", id);
@@ -548,7 +628,7 @@ int db_update_tags(sqlite3 *db, bb_vec *tags, int id, int relation) {
 }
 
 // Used to create a new post, post_id is automatically generated by the DB
-int db_new_post(Post *p) {
+int db_new_post(bb_post *p) {
     int rc; // return values from sqlite3 functions
     int new_id; // rowid of new post
 
@@ -559,8 +639,8 @@ int db_new_post(Post *p) {
     }
 
     // Add post to database
-    rc = execute_query(db, NULL, NULL, ADMIN_NEW_POST, "ississi",
-                p->page_id, p->title, p->text, p->time_r, p->byline, p->thumbnail, p->visible);
+    rc = execute_query(db, NULL, NULL, ADMIN_NEW_POST, "iississi",
+                p->page_id, p->user.id, p->title, p->text, p->time_r, p->byline, p->thumbnail, p->visible);
     if (!rc) {
         fprintf(stderr, "Failed to add post to database\n");
         sqlite3_close(db);
@@ -587,7 +667,7 @@ int db_new_post(Post *p) {
     return 1;
 }
 
-int db_update_post(Post *p) {
+int db_update_post(bb_post *p) {
     int rc;
 
     // Connect to DB
@@ -597,8 +677,8 @@ int db_update_post(Post *p) {
     }
 
     // Update post to database
-    rc = execute_query(db, NULL, NULL, ADMIN_UPDATE_POST, "isisssii",
-                p->page_id, p->title, p->time_r, p->text, p->byline, p->thumbnail, p->visible, p->p_id);
+    rc = execute_query(db, NULL, NULL, ADMIN_UPDATE_POST, "iisisssii",
+                p->page_id, p->user.id, p->title, p->time_r, p->text, p->byline, p->thumbnail, p->visible, p->p_id);
     if (!rc) {
         fprintf(stderr, "Failed to update post to database\n");
         sqlite3_close(db);
@@ -753,6 +833,86 @@ int db_delete_page(int page_id) {
     return 1;
 }
 
+int db_admin_new_user(bb_user *u, const char *password) {
+    int rc; // return values from sqlite3 functions
+
+    // Connect to DB
+    sqlite3 *db = open_database_transaction();
+    if (db == NULL) {
+        return 0;
+    }
+
+    // Add post to database
+    rc = execute_query(db, NULL, NULL, ADMIN_NEW_USER, "ssssss",
+                u->email, password, u->name_id, u->name, u->about, u->thumbnail);
+    if (!rc) {
+        fprintf(stderr, "Failed to add user to database\n");
+        sqlite3_close(db);
+        return 0;
+    }
+
+    // Close connection
+    if (!close_database_transaction(db)) {
+        return 0;
+    }
+    return 1;
+}
+int db_admin_update_user(bb_user *u) {
+    int rc; // return values from sqlite3 functions
+
+    // Connect to DB
+    sqlite3 *db = open_database_transaction();
+    if (db == NULL) {
+        return 0;
+    }
+
+    // Add post to database
+    rc = execute_query(db, NULL, NULL, ADMIN_UPDATE_USER, "sssssi",
+                u->email, u->name_id, u->name, u->about, u->thumbnail, u->id);
+    if (!rc) {
+        fprintf(stderr, "Failed to update user to database\n");
+        sqlite3_close(db);
+        return 0;
+    }
+
+    // Close connection
+    if (!close_database_transaction(db)) {
+        return 0;
+    }
+    return 1;
+}
+int db_admin_delete_user(int id) {
+    int rc; // return values from sqlite3 functions
+
+    // Connect to DB
+    sqlite3 *db = open_database_transaction();
+    if (db == NULL) {
+        return 0;
+    }
+
+    // Add post to database
+    rc = execute_query(db, NULL, NULL, ADMIN_DELETE_USER, "i", id);
+    if (!rc) {
+        fprintf(stderr, "Failed to update user to database\n");
+        sqlite3_close(db);
+        return 0;
+    }
+
+    // NULL out user_ids in Posts
+    rc = execute_query(db, NULL, NULL, ADMIN_DELETE_USER_NULL_POSTS, "i", id);
+    if (!rc) {
+        fprintf(stderr, "Failed to NULLify user_ids in posts to database\n");
+        sqlite3_close(db);
+        return 0;
+    }
+
+    // Close connection
+    if (!close_database_transaction(db)) {
+        return 0;
+    }
+    return 1;
+}
+
 Archives load_archives() {
 
     Archives archives;
@@ -821,13 +981,39 @@ int verify_user(const char* user, const char* password) {
     return 0;
 }
 
-int verify_session(const char* session) {
+int verify_session_cb(sqlite3_stmt* st, void* a) {
+    bb_user *u = (bb_user *)a;
+
+    if(sqlite3_step(st) == SQLITE_ROW) {
+        if (u == NULL) return 0;
+
+        u->id = sqlite3_column_int(st, 0);
+
+        u->email = calloc(sqlite3_column_bytes(st, 1)+1, 1);
+        memcpy(u->email,
+                sqlite3_column_text(st, 1),
+                sqlite3_column_bytes(st, 1));
+        
+        u->name_id = calloc(sqlite3_column_bytes(st, 2)+1, 1);
+        memcpy(u->name_id,
+                sqlite3_column_text(st, 2),
+                sqlite3_column_bytes(st, 2));
+        
+        u->name = calloc(sqlite3_column_bytes(st, 3)+1, 1);
+        memcpy(u->name,
+                sqlite3_column_text(st, 3),
+                sqlite3_column_bytes(st, 3));
+    } else {
+        return 1;
+    }
+    return 0;
+}
+int verify_session(const char* session, bb_user *u) {
     int success = 0;
-    int exists = 0;
 
-    success = execute_query(NULL, verify_user_cb, &exists, CHECK_SESSION, "s", session);
+    success = execute_query(NULL, verify_session_cb, u, CHECK_SESSION, "s", session);
 
-    if (success && exists)
+    if (success)
         return 1;
     
     return 0;
@@ -849,33 +1035,6 @@ int set_user_session(const char* user, const char* password, const char* session
         return 1;
     
     return 0;
-}
-
-void Post_init(Post* p) {
-    p->p_id = -1;
-    p->page_id = -1;
-    p->time_r = 0;
-    p->page = NULL;
-    p->title = NULL;
-    p->text = NULL;
-    p->time = NULL;
-    p->byline = NULL;
-    p->extra = NULL;
-    p->thumbnail = NULL;
-    p->visible = 0;
-    p->tags = NULL;
-}
-
-void Post_free(Post* p) {
-    if (p->page != NULL)        free(p->page);
-    if (p->title != NULL)       free(p->title);
-    if (p->text != NULL)        free(p->text);
-    if (p->time != NULL)        free(p->time);
-    if (p->byline != NULL)      free(p->byline);
-    if (p->extra != NULL)       free(p->extra);
-    if (p->thumbnail != NULL)   free(p->thumbnail);
-    if (p->tags != NULL)        bb_vec_free(p->tags);
-    free(p);
 }
 
 void free_archives(Archives *archives)

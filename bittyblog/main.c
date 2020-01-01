@@ -43,7 +43,8 @@ int main(int argc, char **argv, char **envp)
 
         if (USE_CACHE) {
             uri = d_string_new(getenv("REQUEST_URI"));
-            if (accept_gzip) d_string_prepend(uri, "gzip::");
+            if (accept_gzip)
+                d_string_prepend(uri, "gzip::");
             bb_map_node *cached_resp = bb_map_get(cache, uri->str);
             time_t last_db_update = db_get_last_update();
             if (cached_resp != NULL && cached_resp->time >= last_db_update) {
@@ -73,6 +74,9 @@ int main(int argc, char **argv, char **envp)
         // Posts
         bb_load_posts(&req);
         bb_posts_to_json(root_object, &req, 1);
+
+        // Special info box
+        bb_special_info_box_to_json(root_object, &req);
 
         // Archives
         Archives archives;
