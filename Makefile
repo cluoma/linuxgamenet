@@ -4,7 +4,7 @@ FCGI=y
 all: libMagnum.a
 ifeq ($(FCGI),y)
 	$(CC) -o bb.cgi -D_DEFAULT_SOURCE -D_FCGI -Wall -Wvla -std=c99 -O3 bittyblog/main.c bittyblog/db_interface.c bittyblog/bittyblog.c bittyblog/vec.c bittyblog/cgi.c bittyblog/to_json.c bittyblog/cachemap.c -lsqlite3 -lz -lfcgi -lMagnum -L . -Imagnum/src
-	$(CC) -o bbadmin.cgi -D_DEFAULT_SOURCE -D_FCGI -Wall -Wvla -std=c99 -O3 bittyblog/admin.c bittyblog/db_interface.c bittyblog/bittyblog.c bittyblog/vec.c bittyblog/cgi.c bittyblog/to_json.c bittyblog/cachemap.c -lsqlite3 -lfcgi -lMagnum -L . -Imagnum/src
+	$(CC) -o bbadmin.cgi -D_DEFAULT_SOURCE -D_FCGI -Wall -Wvla -std=c99 -O3 bittyblog/admin.c bittyblog/db_interface.c bittyblog/bittyblog.c bittyblog/vec.c bittyblog/cgi.c bittyblog/to_json.c bittyblog/cachemap.c -lsqlite3 -lz -lfcgi -lMagnum -L . -Imagnum/src
 else
 	$(CC) -o bb.cgi -D_DEFAULT_SOURCE -Wall -Wvla -std=c99 -O3 bittyblog/main.c bittyblog/db_interface.c bittyblog/bittyblog.c bittyblog/vec.c bittyblog/cgi.c bittyblog/to_json.c -lsqlite3 -lz -lMagnum -L . -Imagnum/src
 	$(CC) -o bbadmin.cgi -D_DEFAULT_SOURCE -Wall -Wvla -std=c99 -O3 bittyblog/admin.c bittyblog/db_interface.c bittyblog/bittyblog.c bittyblog/vec.c bittyblog/cgi.c bittyblog/to_json.c -lsqlite3 -lMagnum -L . -Imagnum/src
