@@ -14,6 +14,7 @@
 #define COPYRIGHT_OWNER "LinuxGameNetwork"
 #define NAVBAR_TITLE "LinuxGameNetwork"
 #define HTML_TITLE "Linux gaming news and reviews - LinuxGameNetwork"
+#define DEFAULT_PAGE "blog"
 #define DB_PATH "/home/colin/Documents/linuxgamenet/bittyblog.db"
 #define IMAGE_PATH "/home/colin/Documents/linuxgamenet/www/images"
 #define TEMPLATE_PATH "/home/colin/Documents/linuxgamenet/templates"
