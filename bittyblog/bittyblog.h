@@ -62,16 +62,6 @@ typedef struct {
     bb_vec *tags;
 } bb_page;
 
-// Style definitions
-enum bb_page_styles {
-    BLOG_FULL_POST  = 0,
-    BLOG_SMALL_POST,
-    CONTACT,
-    RSS,
-    MISSING,
-    STYLE_LAST
-};
-
 // Main page request state
 typedef struct {
     // CGI Vars
