@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
 
   <title>{{navbar_title}} - {{page_name}}</title>
@@ -18,6 +18,7 @@
     <p>{{byline}}</p>]]></description>
     {{#tags}}<category>{{.}}</category>{{/tags}}
     <pubDate>{{time_rss}}</pubDate>
+    <dc:creator>{{ user_name }}</dc:creator>
   </item>
   {{/posts}}
 
