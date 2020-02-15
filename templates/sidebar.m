@@ -12,6 +12,13 @@
 
 {{> about_box.m}}
 
+<div class="panel">
+    <div class="panel-heading">Resources</div>
+    <div class="panel-body">
+    <a href="https://www.linuxgame.net/post/181">Helpful tools for Linux gamers</a>
+    </div>
+</div>
+
 <!-- Archives sidebar module-->
 <div class="panel archives">
     <div class="panel-heading">Archives</div>

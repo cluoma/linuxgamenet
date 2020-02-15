@@ -7,10 +7,17 @@
 <meta name="author" content="Garpike">
 <meta name="keywords" content="gaming, linux, video games, news, reviews{{#posts}}{{#tags}}, {{.}}{{/tags}}{{/posts}}">
 <title>{{#posts}}{{title}} - {{owner}}{{/posts}}{{^posts}}{{title}}{{/posts}}</title>
-<link rel="stylesheet" href="/css/bittyblog.min.css" />
+
+<!-- <link rel="stylesheet" href="/css/bittyblog.min.css" /> -->
+<style>{{> bittyblog.min.css}}</style>
 <style>body {padding-top: 70px;}</style>
-<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
-<link rel="apple-touch-icon" href="/images/favicon.png" />
+<link rel="preload" href="https://commento.linuxgame.net/css/commento.css" as="style">
+
+<link rel="shortcut icon" type="image/png" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="196x196" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="canonical" href="https://www.linuxgame.net/post/{{#posts}}{{p_id}}{{/posts}}" />
 
 <meta name="twitter:card" content="summary" />

@@ -6,9 +6,9 @@
 <meta name="keywords" content="gaming, linux, games, oss, news, reviews">
 <title>{{title}}</title>
 <!-- bittyblog core CSS -->
-<link href="/css/bittyblog.min.css" rel="stylesheet">
+<!-- <link href="/css/bittyblog.min.css" rel="stylesheet"> -->
+<style>{{> bittyblog.min.css}}</style>
 <style>body {padding-top: 70px;}</style>
-<!-- <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/> -->
 <link rel="shortcut icon" type="image/png" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
