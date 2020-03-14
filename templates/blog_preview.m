@@ -10,7 +10,6 @@
 <div class="container">
     <div class="row">
     {{> twitch_banner.m}}
-
     <div class="col-sm-9">
         
         {{#special_info_box}}

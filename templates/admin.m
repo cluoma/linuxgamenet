@@ -300,7 +300,8 @@
                 </form>
             </td>
             <td>{{filename}}</td>
-            <td><a href="/images/{{filename}}"><img src="/images/{{filename}}" style="height: 100px;width: 100px;"></a></td>
+            <!--<td><a href="/images/{{filename}}"><img src="/images/{{filename}}" style="height: 100px;width: 100px;"></a></td>-->
+            <td><a href="/images/{{filename}}">Thumbnail</a></td>
         </tr>
         {{/images}}
     </table>

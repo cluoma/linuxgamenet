@@ -12,10 +12,13 @@
 
 {{> about_box.m}}
 
-<div class="panel">
+<div class="panel archives">
     <div class="panel-heading">Resources</div>
     <div class="panel-body">
-    <a href="https://www.linuxgame.net/post/181">Helpful tools for Linux gamers</a>
+    <ol>
+    <li><a href="https://www.linuxgame.net/post/181">Helpful tools for Linux gamers</a></li>
+    <li><a href="https://www.linuxgame.net/post/62">Autostart Steam Link on RPi</a></li>
+    </ol>
     </div>
 </div>
 

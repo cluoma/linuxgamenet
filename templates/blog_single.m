@@ -10,7 +10,7 @@
 
 <!-- <link rel="stylesheet" href="/css/bittyblog.min.css" /> -->
 <style>{{> bittyblog.min.css}}</style>
-<style>body {padding-top: 70px;}</style>
+<style>body {padding-top: 65px;}</style>
 <link rel="preload" href="https://commento.linuxgame.net/css/commento.css" as="style">
 
 <link rel="shortcut icon" type="image/png" href="/favicon.ico">
