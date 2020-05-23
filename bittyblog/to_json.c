@@ -64,13 +64,13 @@ int bb_nav_buttons_to_json(JSON_Object *root_object, bb_page_request *req)
     long start = bb_strtol(bb_cgi_get_var(req->q_vars, "start"), 0);
     // Older
     if ( start+POSTS_PER_PAGE < req->total_post_count ) {
-        char out[20];
+        char out[30];
         sprintf(out, "%ld", start+POSTS_PER_PAGE);
         json_object_dotset_string(root_object, "nav_buttons.older", out);
     }
     // Newer
     if ( start > 0 ) {
-        char out[20];
+        char out[30];
         sprintf(out, "%ld", start-POSTS_PER_PAGE);
         json_object_dotset_string(root_object, "nav_buttons.newer", out);
     }
@@ -78,7 +78,7 @@ int bb_nav_buttons_to_json(JSON_Object *root_object, bb_page_request *req)
     return 1;
 }
 
-void bb_posts_to_json(JSON_Object *root_object, bb_page_request *req, int format)
+void bb_posts_to_json(JSON_Object *root_object, bb_page_request *req)
 {
     bb_vec *entries = req->posts;
 
@@ -90,6 +90,7 @@ void bb_posts_to_json(JSON_Object *root_object, bb_page_request *req, int format
         json_object_set_string(json_value_get_object(tmp_post), "page", p->page);
         json_object_set_string(json_value_get_object(tmp_post), "title", p->title);
         json_object_set_string(json_value_get_object(tmp_post), "byline", p->byline);
+        json_object_set_string(json_value_get_object(tmp_post), "text", p->text);
         json_object_set_string(json_value_get_object(tmp_post), "extra", p->extra);
 
         // Add different times
@@ -109,15 +110,6 @@ void bb_posts_to_json(JSON_Object *root_object, bb_page_request *req, int format
             json_object_set_string(json_value_get_object(tmp_post), "thumbnail", "bb_default.thumbnail.jpg");
         } else {
             json_object_set_string(json_value_get_object(tmp_post), "thumbnail", p->thumbnail);
-        }
-
-        // Prepare newlines for HTML output or not
-        if (format) {
-            char *formatted_post_text = newline_to_html(p->text);
-            json_object_set_string(json_value_get_object(tmp_post), "text", formatted_post_text);
-            free(formatted_post_text);
-        } else {
-            json_object_set_string(json_value_get_object(tmp_post), "text", p->text);
         }
 
         // Add an array of tags to the post
@@ -162,7 +154,7 @@ void bb_special_info_box_to_json(JSON_Object *root_object, bb_page_request *req)
 
     char *author = bb_cgi_get_var(req->q_vars, "author");
     if (author) {
-        bb_vec *user_v = db_author(author);
+        bb_vec *user_v = db_author(req->dbcon, author);
         if (bb_vec_count(user_v) > 0) {
             bb_user *user = (bb_user *)bb_vec_get(user_v, 0);
             json_object_set_boolean(special_info_box_object, "author", 1);
@@ -175,20 +167,6 @@ void bb_special_info_box_to_json(JSON_Object *root_object, bb_page_request *req)
     }
 end:
     json_object_set_value(root_object, "special_info_box", json_object_get_wrapping_value(special_info_box_object));
-}
-
-void bb_archives_to_json(JSON_Object *root_object, Archives *a)
-{
-    JSON_Array *archs = json_value_get_array(json_value_init_array());
-    for (int i = 0; i < a->row_count; i++) {
-        JSON_Value *val = json_value_init_object();
-        json_object_set_string(json_value_get_object(val), "month_s", a->month_s[i]);
-        json_object_set_number(json_value_get_object(val), "month", a->month[i]);
-        json_object_set_number(json_value_get_object(val), "year", a->year[i]);
-        json_object_set_number(json_value_get_object(val), "post_count", a->post_count[i]);
-        json_array_append_value(archs, val);
-    }
-    json_object_set_value(root_object, "archives", json_array_get_wrapping_value(archs));
 }
 
 /*
@@ -234,10 +212,8 @@ void bb_posts_to_json_admin(JSON_Object *root_object, bb_page_request *req, bb_v
             // Add text twice, once for text box and once for the preview
             if (action == EDIT)
             {
-                json_object_set_string(json_value_get_object(tmp_post), "text", p->text);
-                char *formatted_post_text = newline_to_html(p->text);
-                json_object_set_string(json_value_get_object(tmp_post), "text_formatted", formatted_post_text);
-                free(formatted_post_text);
+                json_object_set_string(json_value_get_object(tmp_post), "text", p->markdown);
+                json_object_set_string(json_value_get_object(tmp_post), "text_formatted", p->text);
 
                 char time_r[25];
                 sprintf(time_r, "%ld", p->time_r);

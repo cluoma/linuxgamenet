@@ -27,6 +27,8 @@
 #include <d_string.h>
 #include <file.h>
 
+// Modules
+#include "mod_archives.h"
 
 #ifdef _FCGI
 #include "cachemap.h"
@@ -63,6 +65,11 @@ int main(int argc, char **argv, char **envp)
         cache = bb_map_init(CACHE_INIT_BUCKETS, MAX_CACHE_BYTES, CACHE_TIMEOUT_SECONDS);
     }
 
+    // Open long-lived database connection
+    db_conn *con = db_open_conn(DB_SQLITE, DB_WRITE);
+    if (con == NULL)
+        return 1;
+
     while(FCGI_Accept() >= 0) {
 #endif
 
@@ -77,26 +84,38 @@ int main(int argc, char **argv, char **envp)
             if (accept_gzip)
                 d_string_prepend(uri, "gzip::");
             bb_map_node *cached_resp = bb_map_get(cache, uri->str);
-            time_t last_db_update = db_get_last_update();
+            time_t last_db_update = db_get_last_update(con);
             if (cached_resp != NULL && cached_resp->time >= last_db_update) {
                 
                 if(end_timer()) {
-                    printf("X-bb-time: %d.%06d\r\n", 0, 0);
+                    printf("X-bb-time: %ld.%06ld\r\n", (long)0, (long)0);
                 } else {
-                    printf("X-bb-time: %d.%06d\r\n", timer.tv_sec, timer.tv_usec);
+                    printf("X-bb-time: %ld.%06ld\r\n", timer.tv_sec, timer.tv_usec);
                 }
 
                 printf("X-bb-cache: hit\r\n");
                 fwrite(cached_resp->data, 1, cached_resp->datalen, stdout);
+
+                FCGI_Finish();
+
                 d_string_free(uri, 1);
                 continue;
             }
         }
 #endif
 
+#ifndef _FCGI
+    // Open short-lived database connection
+    db_conn *con = db_open_conn(DB_SQLITE, DB_WRITE);
+    if (con == NULL)
+        return 1;
+#endif
+
     // Init page request
     bb_page_request req;
     bb_init(&req, PARSE_GET);
+    bb_set_dbcon(&req, con);
+    bb_load_pages(&req);
 
     // Initiate JSON objects
     JSON_Value *root_value = json_value_init_object();
@@ -107,16 +126,16 @@ int main(int argc, char **argv, char **envp)
     if (req.page != NULL) {
         // Posts
         bb_load_posts(&req);
-        bb_posts_to_json(root_object, &req, 1);
+        bb_posts_to_json(root_object, &req);
 
         // Special info box
         bb_special_info_box_to_json(root_object, &req);
 
         // Archives
         Archives archives;
-        archives = load_archives();
-        bb_archives_to_json(root_object, &archives);
-        free_archives(&archives);
+        archives = mod_archives_load(con);
+        mod_archives_to_json(root_object, &archives);
+        mod_archives_free(&archives);
 
         // Set nav buttons
         bb_nav_buttons_to_json(root_object, &req);
@@ -144,6 +163,7 @@ int main(int argc, char **argv, char **envp)
     // Response content
     DString *out = d_string_new("");
     magnum_populate_from_json(template, root_value, out, TEMPLATE_PATH, NULL);
+    //magnum_populate_from_json_shared_data(template, root_value, out, TEMPLATE_PATH, bb_load_partial, &req);
 
     // Compress output if we need to
     if (accept_gzip) {
@@ -171,9 +191,9 @@ int main(int argc, char **argv, char **envp)
     }
     // Add timer
     if(end_timer()) {
-        printf("X-bb-time: %d.%06d\r\n", 0, 0);
+        printf("X-bb-time: %ld.%06ld\r\n", (long)0, (long)0);
     } else {
-        printf("X-bb-time: %d.%06d\r\n", timer.tv_sec, timer.tv_usec);
+        printf("X-bb-time: %ld.%06ld\r\n", timer.tv_sec, timer.tv_usec);
     }
     // Add cache miss
     printf("X-bb-cache: miss\r\n%s", headers->str);
@@ -196,14 +216,20 @@ int main(int argc, char **argv, char **envp)
     json_value_free(root_value);
 
     bb_free(&req);
+
+#ifndef _FCGI
+    db_close_conn(con);
+#endif
     
 #ifdef _FCGI
     }  // Leave Accept loop
+
+    // Close database connection
+    db_close_conn(con);
 
     // Final cleanup
     if (USE_CACHE) {
         bb_map_free(cache);
     }
-    FCGI_Finish();
 #endif
 }
