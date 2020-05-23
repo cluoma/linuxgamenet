@@ -58,7 +58,7 @@
         {{#posts}}
         <div class="blog-post">
 
-        <h2 class="blog-post-title">{{title}}</h2>
+        <h1 class="blog-post-title">{{title}}</h1>
         
         {{#rewrite}}<p class="blog-post-meta">By <a href="/author/{{user_name_id}}">{{user_name}}</a>, {{time}}</p>{{/rewrite}}
         {{^rewrite}}<p class="blog-post-meta">By <a href="{{script_name}}?author={{user_name_id}}">{{user_name}}</a>, {{time}}</p>{{/rewrite}}
