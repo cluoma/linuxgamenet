@@ -16,11 +16,21 @@
     <div class="panel-heading">Resources</div>
     <div class="panel-body">
     <ol>
+    <li><a href="https://www.linuxgame.net/post/233">Steam Linux usage statistics</a></li>
     <li><a href="https://www.linuxgame.net/post/181">Helpful tools for Linux gamers</a></li>
     <li><a href="https://www.linuxgame.net/post/62">Autostart Steam Link on RPi</a></li>
     </ol>
     </div>
 </div>
+
+<!--
+<div class="panel">
+    <div class="panel-heading">Game Servers</div>
+    <div class="panel-body">
+    <a href="https://www.linuxgame.net/post/219#mcserver">Minecraft (20w16a survival)</a>
+    </div>
+</div>
+-->
 
 <!-- Archives sidebar module-->
 <div class="panel archives">
@@ -39,11 +49,3 @@
     </div>
 </div>
 
-<!--
-<div class="panel">
-    <div class="panel-heading">Game Servers</div>
-    <div class="panel-body">
-    <a href="https://www.linuxgame.net/post/126">Minecraft (v1.15 survival)</a>
-    </div>
-</div>
--->

@@ -27,6 +27,7 @@
 // Helper function to open SQLite3 DB
 sqlite3 *open_database()
 {
+	fprintf(stderr, "database opened\n");
     sqlite3 *db;
 
     int err;
