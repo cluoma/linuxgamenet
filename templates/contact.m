@@ -16,6 +16,7 @@
     <div class="panel">
     <div class="panel-heading">{{title}}</div>
     <div class="panel-body">
+    <style>.blog-post-text :last-child {margin-bottom: 0;}</style>
     <div class="blog-post-text" style="margin-top:0;">{{&text}}</div>
     </div>
     </div>
