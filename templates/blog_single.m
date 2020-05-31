@@ -56,6 +56,7 @@
         {{/tag}}
 
         {{#posts}}
+        <img src="/counter.png?post={{p_id}}" style="display: none;">
         <div class="blog-post">
 
         <h1 class="blog-post-title">{{title}}</h1>
