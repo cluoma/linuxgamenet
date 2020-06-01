@@ -1,0 +1,9 @@
+[Unit]
+Description=bittyblog service (instance %i)
+
+[Service]
+Type=simple
+ExecStart=/home/colin/Documents/linuxgamenet/www/cgi-bin/bb.cgi
+User=www-data
+Group=www-data
+StandardInput=socket
