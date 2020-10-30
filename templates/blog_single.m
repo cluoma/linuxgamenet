@@ -4,7 +4,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{{#posts}}{{byline}}{{/posts}}">
-<meta name="author" content="Garpike">
+<meta name="author" content="{{#posts}}{{user_name}}{{/posts}}">
 <meta name="keywords" content="gaming, linux, video games, news, reviews{{#posts}}{{#tags}}, {{.}}{{/tags}}{{/posts}}">
 <title>{{#posts}}{{title}} - {{owner}}{{/posts}}{{^posts}}{{title}}{{/posts}}</title>
 
@@ -19,6 +19,14 @@
 <link rel="icon" type="image/png" sizes="196x196" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="canonical" href="https://www.linuxgame.net/post/{{#posts}}{{p_id}}{{/posts}}" />
+
+<meta property="og:title" content="{{#posts}}{{title}}{{/posts}}" />
+<meta property="og:description" content="{{#posts}}{{byline}}{{/posts}}" />
+<meta property="og:type" content="article" />
+<meta property="og:article:author" content="{{#posts}}{{user_name}}{{/posts}}" />
+<meta property="og:article:section" content="linux" />
+<meta property="og:url" content="https://www.linuxgame.net/post/{{#posts}}{{p_id}}{{/posts}}" />
+<meta property="og:image" content="https://www.linuxgame.net/images/{{#posts}}{{thumbnail}}{{/posts}}" />
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@LinuxGameDotNet" />
