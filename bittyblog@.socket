@@ -1,0 +1,9 @@
+[Unit]
+Description=bittyblog socket (instance %i)
+
+[Socket]
+ListenStream=/var/run/bittyblog.socket-%i
+Accept=false
+
+[Install]
+WantedBy=sockets.target

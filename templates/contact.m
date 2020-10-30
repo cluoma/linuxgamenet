@@ -5,6 +5,8 @@
 
 {{> navbar.m}}
 
+<img src="/counter.png?page={{page_name}}" style="display: none;">
+
 <div class="container">
 <div class="row">
     
