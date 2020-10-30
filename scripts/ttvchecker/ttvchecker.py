@@ -86,7 +86,7 @@ def write_template(filename, username, gamename):
         return 1
 
     if is_empty and gamename is not None:
-        template = f'<a href="https://www.twitch.tv/{username}"><div style="background-color: #4b367c; color: white; padding: 4px; padding-top: 6px; text-align: center; font-size: 14pt; max-width: 100%; margin: 15px; margin-top: 0px; margin-bottom: 18px;"><b>Live now on Twitch!</b>Playing - {gamename}</div></a>'
+        template = f'<a href="https://www.twitch.tv/{username}"><div style="background-color: #4b367c; color: white; padding: 4px; padding-top: 6px; text-align: center; font-size: 14pt; max-width: 100%; margin: 15px; margin-top: 0px; margin-bottom: 18px;"><b>Live now on Twitch!</b> - Playing: {gamename}</div></a>'
     elif not is_empty and gamename is None:
         template = ''
     else:
