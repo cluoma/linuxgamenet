@@ -18,10 +18,19 @@
     <ol>
     <li><a href="https://www.linuxgame.net/post/233">Steam Linux usage statistics</a></li>
     <li><a href="https://www.linuxgame.net/post/181">Helpful tools for Linux gamers</a></li>
-    <li><a href="https://www.linuxgame.net/post/62">Autostart Steam Link on RPi</a></li>
+    <!--<li><a href="https://www.linuxgame.net/post/62">Autostart Steam Link on RPi</a></li>-->
     </ol>
     </div>
 </div>
+
+<!--
+<div class="panel archives">
+    <div class="panel-heading">We Support FOSS</div>
+    <div class="panel-body">
+    <p>LinuxGameNetwork financially supports the following FOSS projects</p>
+    </div>
+</div>
+-->
 
 <!--
 <div class="panel">

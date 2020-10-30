@@ -71,7 +71,8 @@
         <nav><ul class="pager">
         {{#rewrite}}
         {{#older}}
-        <li style="float: left"><a href="{{#tag}}/tag/{{.}}?{{/tag}}{{^tag}}{{#search}}/search?search={{.}}{{/search}}{{^search}}?{{/search}}{{#search}}&{{/search}}{{/tag}}start={{.}}">Older</a></li>
+        <!--<li style="float: left"><a href="{{#tag}}/tag/{{.}}?{{/tag}}{{^tag}}{{#search}}/search?search={{.}}{{/search}}{{^search}}?{{/search}}{{#search}}&{{/search}}{{/tag}}start={{.}}">Older</a></li>-->
+        <li style="float: left"><a href="{{#special_info_box}}{{#search}}/search?search={{.}}&{{/search}}{{^search}}?{{/search}}{{/special_info_box}}start={{.}}">Older</a></li>
         {{/older}}
         {{/rewrite}}
         {{^rewrite}}
@@ -82,7 +83,8 @@
     
         {{#rewrite}}
         {{#newer}}
-        <li style="float: right"><a href="{{#tag}}/tag/{{.}}?{{/tag}}{{^tag}}{{#search}}/search?search={{.}}{{/search}}{{^search}}?{{/search}}{{#search}}&{{/search}}{{/tag}}start={{.}}">Newer</a></li>
+        <!--<li style="float: right"><a href="{{#tag}}/tag/{{.}}?{{/tag}}{{^tag}}{{#search}}/search?search={{.}}{{/search}}{{^search}}?{{/search}}{{#search}}&{{/search}}{{/tag}}start={{.}}">Newer</a></li>-->
+        <li style="float: right"><a href="{{#special_info_box}}{{#search}}/search?search={{.}}&{{/search}}{{^search}}?{{/search}}{{/special_info_box}}start={{.}}">Newer</a></li>
         {{/newer}}
         {{/rewrite}}
         {{^rewrite}}
